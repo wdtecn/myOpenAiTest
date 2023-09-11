@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body style="background: aqua">
+<div align="center">
+    <br><br><h2>利用OpenAI的API纠正输入英语文本的错字</h2><br><br>
+    包含错误的句子:<input type="text" id="inputText" style="text-color:red;" required/>
+    <input id="submit" type="submit" value="纠错">
+    <br>
+    <br>
+    <span style="text-color:green;font-size: 30px"></span>
+</div>
+</body>
+</html>
+<script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.4.1.min.js"></script><script>
+    $(document).ready(function() {
+        // 使用Ajax请求数据
+        $('#submit').click(function () {
+            var txt = $('#inputText').val();
+            $.ajax({
+                url: "/api/correct",
+                type: "POST",
+                data: {"inputText":txt},
+                success: function(response) {
+                    // 请求成功后的操作
+                    if (response.code == 200) {
+                        $("span").html("纠正后的句子：" + response.data);
+                    } else {
+                        $("span").html("出现错误：：" + response.msg);
+                    }
+
+                }
+            });
+        });
+    });
+</script>
